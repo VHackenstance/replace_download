@@ -4,7 +4,6 @@ import netfilterqueue
 from scapy.layers.inet import IP, TCP
 from scapy.layers.dns import Raw
 
-ack_list = []
 def process_packet(packet):
     scapy_packet= IP(packet.get_payload())
     if scapy_packet.haslayer(Raw):
