@@ -10,15 +10,28 @@ def process_packet(packet):
     scapy_packet= IP(packet.get_payload())
     if scapy_packet.haslayer(Raw):
         if scapy_packet.haslayer(TCP):
-            print("[+] Packet has layer TCP")
+            print("\n[+] Packet has layer TCP")
             if scapy_packet[TCP].dport == 80:
-                print("\n\n[+] This is a HTTP Request: ")
-            #     # The load is unreadable, according to internet, a TLS encryption.
-            #     # However, str() cast works
-            #     load = str(scapy_packet[Raw].load)
-            #     print("\n[+] Load set to a string:\n")
-            #     print(load)
-                # Look for an .exe download, from but can update this for any download
+                print("[+] This is a HTTP Request: \n")
+                load = str(scapy_packet[Raw].load)
+                print("[+] Load set to a string:")
+                # ****** This works, for online OWASP Juice Shop ******
+                print(load)
+
+            # ********** TODO
+            # ONE. search HTTP load now for .exe
+            # TWO. scrap but keep commented code for HTTPS
+            # ********** END TODO
+
+            # This does not work!!!!!!!!!!!!!!!!!!!!!!!!!
+            # for local OWASP so giving it a miss for now.
+            # elif scapy_packet[TCP].dport == 443:
+            #     print("[+] This is a HTTPS Request: \n")
+            #     print(scapy_packet[Raw].load)
+
+
+
+        # Look for an .exe download, from but can update this for any download
         # elif scapy_packet[TCP].sport == 80:
         #     print("\n\n[+] This is a HTTP Response: ")
         #     print(scapy_packet.show())
