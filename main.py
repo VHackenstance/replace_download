@@ -21,26 +21,27 @@ def process_packet(packet):
                     ack_list.append(scapy_packet[TCP].ack)
 
             elif scapy_packet[TCP].sport == 80:
-                print("[+] This is a HTTP Response:  ")
+                print("[+] This is a HTTP Response: ")
                 if scapy_packet[TCP].seq:
                     print("[+] Here is our Sequence Number: ")
                     print(scapy_packet[TCP].seq)
                     if scapy_packet[TCP].seq in ack_list:
                         print("[+] Replacing File: ")
+                        # ********** TODO
+                        # code to replace file here
+                        # ********** TODO
 
-
-
-            # ********** TODO
-            # ONE. search HTTP load now for .exe
-            # TWO. scrap but keep commented code for HTTPS
-            # ********** END TODO
-
+            # NOTE TO SELF!  We do not need to make code human readable
+            # **********
             # print(scapy_packet.show())
             # load = str(scapy_packet[Raw].load)
             # print("[+] Load set to a string:")
             # print(load)
 
-            # ********** This does not work! For local OWASP port 3000
+            # ********** TODO
+            # Test this locally on Juice Shop
+            # ********** TODO
+            # now I know i do not need to make code human readable
             # Cannot unencrypt load, which shows as Broken binary.
             # if scapy_packet[TCP].dport == 443:
             #     print("\n\n[+] This is a HTTPS Request: ")

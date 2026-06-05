@@ -1,6 +1,12 @@
 <h3>REPLACE DOWNLOAD</h3>
 <h4>Intercept Target download and replace it with Spoof file.</h4>
 <h4>Basic Stuff:</h4>
+<p>Tested and works so far with OWASP Juice Shop online
+    <br/>
+    <b>http://demo.owasp-juice.shop/ftp/quarantine</b>
+    <br/>
+    When it is not broken lol.
+</p>
 <ol>
     <li>Enable port forwarding (1) just in case you want to remote.
         <br/> It doesn't seem to make a difference.
