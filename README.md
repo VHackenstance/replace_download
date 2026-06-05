@@ -6,7 +6,13 @@
     <br/>
     <b>http://demo.owasp-juice.shop/ftp/quarantine</b>
     <br/>
-    When it is not broken lol.
+    When it is not broken lol.  Because, let us be clear.  This is the only http site, I 
+    could find, which allows you to test downloads.  Due to this and many other reasons, 
+    it is often broken.
+</p>
+<h4>Testing in General</h4>
+<p>Why test locally when you can straight up just test on Remote VM, on your lab.
+<br/> Cover two birds with one stone did this here and much easier.
 </p>
 <ol>
     <li>Enable port forwarding (1) just in case you want to remote.
